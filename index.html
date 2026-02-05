@@ -235,4 +235,480 @@
     /* Quiz */
     .q{
       background: rgba(255,255,255,.08);
-      border:1px s
+      border:1px solid rgba(255,255,255,.12);
+      border-radius: 16px;
+      padding:12px;
+      margin-top:10px;
+    }
+    .q .stem{
+      font-size:14px;
+      margin-bottom:10px;
+      line-height:1.5;
+    }
+    .choices{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:8px;
+    }
+    @media (max-width: 560px){
+      .choices{grid-template-columns:1fr}
+    }
+    .choice{
+      display:flex; gap:10px; align-items:center;
+      padding:10px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.14);
+      cursor:pointer;
+      transition: transform .06s ease, filter .12s ease;
+      user-select:none;
+      font-size:13px;
+    }
+    .choice:hover{filter:brightness(1.05)}
+    .choice:active{transform: translateY(1px)}
+    .choice.good{border-color: rgba(46,229,157,.55); background: rgba(46,229,157,.14)}
+    .choice.bad{border-color: rgba(255,92,122,.55); background: rgba(255,92,122,.14)}
+    .feedback{
+      margin-top:10px;
+      font-size:13px;
+      color: var(--muted);
+      line-height:1.45;
+    }
+
+    .footerbar{
+      margin-top:12px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      color: var(--muted);
+      font-size:13px;
+    }
+    .toast{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.14);
+      display:none;
+    }
+    .toast.show{display:block}
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size:12px;
+      padding:2px 6px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.14);
+      color: var(--text);
+      white-space:nowrap;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="topbar">
+      <div class="title">
+        <div class="badge">SP</div>
+        <div>
+          <h1>Simple Present Tense — Interactive Lesson</h1>
+          <div class="sub">Quick rules + practice (drag & drop + quiz) — works offline</div>
+        </div>
+      </div>
+      <div class="controls">
+        <div class="pill">Score: <strong id="score">0</strong></div>
+        <div class="pill">Streak: <strong id="streak">0</strong></div>
+        <button class="btn secondary" id="showRulesBtn" type="button">Show / Hide Rules</button>
+        <button class="btn" id="resetBtn" type="button">Reset</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="grid">
+      <!-- Left: Rules + examples + drag/drop -->
+      <section class="card">
+        <h2>1) Rules (Simple Present)</h2>
+        <div class="mini">
+          <span class="tag">Use for habits & routines</span>
+          <span class="tag">Facts & general truths</span>
+          <span class="tag">Schedules / timetables</span>
+        </div>
+
+        <div id="rulesPanel" style="margin-top:12px;">
+          <div class="rulebox">
+            <div class="rule">
+              <div class="head">
+                <strong>Affirmative (+)</strong>
+                <span class="chip">I / You / We / They</span>
+              </div>
+              <ul>
+                <li>Subject + base verb</li>
+                <li><b>I play</b>, <b>They work</b></li>
+              </ul>
+              <div class="example">Example: <b>We study</b> English every day.</div>
+            </div>
+
+            <div class="rule">
+              <div class="head">
+                <strong>Affirmative (+)</strong>
+                <span class="chip">He / She / It</span>
+              </div>
+              <ul>
+                <li>Subject + verb + <b>s/es</b></li>
+                <li><b>He plays</b>, <b>She watches</b></li>
+              </ul>
+              <div class="example">Example: <b>He goes</b> to school at 7.</div>
+            </div>
+
+            <div class="rule">
+              <div class="head">
+                <strong>Negative (–)</strong>
+                <span class="chip">do / does + not</span>
+              </div>
+              <ul>
+                <li>I/You/We/They: <b>do not (don’t) + base</b></li>
+                <li>He/She/It: <b>does not (doesn’t) + base</b></li>
+              </ul>
+              <div class="example">Example: <b>She doesn’t like</b> milk.</div>
+            </div>
+
+            <div class="rule">
+              <div class="head">
+                <strong>Questions (?)</strong>
+                <span class="chip">Do / Does</span>
+              </div>
+              <ul>
+                <li><b>Do</b> + I/you/we/they + base?</li>
+                <li><b>Does</b> + he/she/it + base?</li>
+              </ul>
+              <div class="example">Example: <b>Does</b> he <b>play</b> football?</div>
+            </div>
+          </div>
+
+          <div class="hint">
+            <div class="dot"></div>
+            <div>
+              <div><b>Spelling tips:</b> add <b>es</b> with verbs ending in <span class="kbd">s, sh, ch, x, o</span> (watches, goes). For <span class="kbd">consonant + y</span>, change y → <b>ies</b> (study → studies).</div>
+            </div>
+          </div>
+        </div>
+
+        <h2 style="margin-top:14px;">2) Drag & Drop Practice</h2>
+        <div class="mini">
+          <span class="tag">Drag each sentence to the correct box</span>
+          <span class="tag">Instant feedback</span>
+        </div>
+
+        <div class="dd-wrap">
+          <div class="dropzone" id="zoneCorrect">
+            <h3>✅ Correct Simple Present <span class="count" id="countCorrect">0</span></h3>
+            <div class="tiles" id="tilesCorrect" aria-label="correct zone"></div>
+          </div>
+
+          <div class="dropzone" id="zoneFix">
+            <h3>🛠 Needs Fixing <span class="count" id="countFix">0</span></h3>
+            <div class="tiles" id="tilesFix" aria-label="fix zone"></div>
+          </div>
+        </div>
+
+        <div class="hint">
+          <div class="dot" style="background:var(--accent2); box-shadow:0 0 0 4px rgba(57,213,255,.14)"></div>
+          <div>
+            Tip: Focus on <b>He/She/It + s/es</b> and using <b>do/does</b> for questions & negatives.
+          </div>
+        </div>
+
+        <div class="toast" id="ddToast"></div>
+      </section>
+
+      <!-- Right: Quiz -->
+      <aside class="card">
+        <h2>3) Quick Quiz</h2>
+        <div class="mini">
+          <span class="tag">Multiple choice</span>
+          <span class="tag">Score + streak</span>
+        </div>
+
+        <div id="quizArea"></div>
+
+        <div class="footerbar">
+          <div>Progress: <span class="kbd" id="progress">0/0</span></div>
+          <button class="btn secondary" id="nextBtn" type="button">Next Question</button>
+        </div>
+
+        <div class="toast" id="quizToast"></div>
+      </aside>
+    </div>
+  </main>
+
+  <script>
+    // ======= Helpers =======
+    const $ = (sel) => document.querySelector(sel);
+    const scoreEl = $("#score");
+    const streakEl = $("#streak");
+
+    let score = 0;
+    let streak = 0;
+
+    function addScore(points){
+      score = Math.max(0, score + points);
+      scoreEl.textContent = score;
+    }
+    function setStreak(val){
+      streak = Math.max(0, val);
+      streakEl.textContent = streak;
+    }
+    function toast(el, msg, ok=true){
+      el.classList.add("show");
+      el.style.borderColor = ok ? "rgba(46,229,157,.35)" : "rgba(255,92,122,.35)";
+      el.innerHTML = msg;
+      clearTimeout(el._t);
+      el._t = setTimeout(()=> el.classList.remove("show"), 2400);
+    }
+    function shuffle(arr){
+      const a = arr.slice();
+      for(let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    // ======= Rules panel toggle =======
+    $("#showRulesBtn").addEventListener("click", ()=>{
+      const p = $("#rulesPanel");
+      p.style.display = (p.style.display === "none") ? "block" : "none";
+    });
+
+    // ======= Drag & Drop content =======
+    const ddItems = [
+      { text: "She play tennis every weekend.", correct: false, fix: "She plays tennis every weekend." },
+      { text: "They study English on Mondays.", correct: true },
+      { text: "He goes to school at 7.", correct: true },
+      { text: "I don’t likes coffee.", correct: false, fix: "I don’t like coffee." },
+      { text: "Does he work here?", correct: true },
+      { text: "We watches TV at night.", correct: false, fix: "We watch TV at night." },
+      { text: "My father doesn’t drive on Fridays.", correct: true },
+      { text: "Do she like apples?", correct: false, fix: "Does she like apples?" }
+    ];
+
+    const tilesCorrect = $("#tilesCorrect");
+    const tilesFix = $("#tilesFix");
+    const ddToast = $("#ddToast");
+
+    function updateCounts(){
+      $("#countCorrect").textContent = tilesCorrect.children.length;
+      $("#countFix").textContent = tilesFix.children.length;
+    }
+
+    function makeTile(item){
+      const div = document.createElement("div");
+      div.className = "tile";
+      div.draggable = true;
+      div.textContent = item.text;
+      div.dataset.correct = item.correct ? "1" : "0";
+      div.dataset.fix = item.fix || "";
+
+      div.addEventListener("dragstart", (e)=>{
+        e.dataTransfer.setData("text/plain", div.dataset.id);
+        e.dataTransfer.effectAllowed = "move";
+        div.classList.add("dragging");
+      });
+      div.addEventListener("dragend", ()=>{
+        div.classList.remove("dragging");
+      });
+      return div;
+    }
+
+    function enableDrop(zoneEl, isCorrectZone){
+      zoneEl.addEventListener("dragover", (e)=>{
+        e.preventDefault();
+        e.dataTransfer.dropEffect = "move";
+      });
+      zoneEl.addEventListener("drop", (e)=>{
+        e.preventDefault();
+        const id = e.dataTransfer.getData("text/plain");
+        const tile = document.querySelector(`.tile[data-id="${id}"]`);
+        if(!tile) return;
+        zoneEl.querySelector(".tiles").appendChild(tile);
+        gradeDrop(tile, isCorrectZone);
+        updateCounts();
+      });
+    }
+
+    function gradeDrop(tile, droppedInCorrect){
+      const isCorrect = tile.dataset.correct === "1";
+      tile.classList.remove("good","bad");
+
+      if(droppedInCorrect && isCorrect){
+        tile.classList.add("good");
+        addScore(2);
+        setStreak(streak + 1);
+        toast(ddToast, "✅ Correct! +2 points", true);
+      } else if(!droppedInCorrect && !isCorrect){
+        tile.classList.add("good");
+        addScore(2);
+        setStreak(streak + 1);
+        const fix = tile.dataset.fix ? `<br><span class="kbd">${tile.dataset.fix}</span>` : "";
+        toast(ddToast, `✅ Good catch! +2 points${fix}`, true);
+      } else {
+        tile.classList.add("bad");
+        addScore(-1);
+        setStreak(0);
+        const fix = tile.dataset.fix ? `<br>Try: <span class="kbd">${tile.dataset.fix}</span>` : "";
+        toast(ddToast, `❌ Not quite. -1 point${fix}`, false);
+      }
+    }
+
+    function initDragDrop(){
+      tilesCorrect.innerHTML = "";
+      tilesFix.innerHTML = "";
+      const items = shuffle(ddItems);
+
+      items.forEach((item, idx)=>{
+        const tile = makeTile(item);
+        tile.dataset.id = "t" + idx;
+        // Start all tiles in a mixed pile inside Fix zone for gameplay
+        tilesFix.appendChild(tile);
+      });
+
+      enableDrop($("#zoneCorrect"), true);
+      enableDrop($("#zoneFix"), false);
+
+      updateCounts();
+    }
+
+    // ======= Quiz =======
+    const quizBank = [
+      {
+        stem: "Choose the correct sentence:",
+        choices: ["He play football every day.", "He plays football every day.", "He is play football every day.", "He playing football every day."],
+        answer: 1,
+        explain: "With <b>he/she/it</b>, add <b>s/es</b> → <b>He plays</b>."
+      },
+      {
+        stem: "Complete: _____ you like tea?",
+        choices: ["Does", "Do", "Is", "Are"],
+        answer: 1,
+        explain: "Questions with <b>I/you/we/they</b> use <b>Do</b>."
+      },
+      {
+        stem: "Complete: She _____ (watch) TV at night.",
+        choices: ["watch", "watches", "watching", "is watch"],
+        answer: 1,
+        explain: "Verb ending with <b>ch</b> → add <b>es</b>: <b>watches</b>."
+      },
+      {
+        stem: "Choose the correct negative:",
+        choices: ["He don’t like apples.", "He doesn’t likes apples.", "He doesn’t like apples.", "He not like apples."],
+        answer: 2,
+        explain: "Negative with <b>he/she/it</b> → <b>doesn’t + base verb</b>."
+      },
+      {
+        stem: "Complete: They _____ to school by bus.",
+        choices: ["go", "goes", "going", "is go"],
+        answer: 0,
+        explain: "<b>They</b> takes the base verb: <b>go</b>."
+      }
+    ];
+
+    let quiz = [];
+    let qIndex = 0;
+    let answered = false;
+
+    const quizArea = $("#quizArea");
+    const quizToast = $("#quizToast");
+    const progressEl = $("#progress");
+
+    function renderQuestion(){
+      answered = false;
+      quizArea.innerHTML = "";
+      const q = quiz[qIndex];
+
+      const box = document.createElement("div");
+      box.className = "q";
+
+      const stem = document.createElement("div");
+      stem.className = "stem";
+      stem.innerHTML = `<b>Q${qIndex+1}.</b> ${q.stem}`;
+      box.appendChild(stem);
+
+      const choices = document.createElement("div");
+      choices.className = "choices";
+
+      q.choices.forEach((c, i)=>{
+        const btn = document.createElement("div");
+        btn.className = "choice";
+        btn.innerHTML = `<span class="kbd">${String.fromCharCode(65+i)}</span> <span>${c}</span>`;
+        btn.addEventListener("click", ()=> choose(i, btn));
+        choices.appendChild(btn);
+      });
+
+      box.appendChild(choices);
+
+      const fb = document.createElement("div");
+      fb.className = "feedback";
+      fb.id = "fb";
+      fb.textContent = "Tap an answer.";
+      box.appendChild(fb);
+
+      quizArea.appendChild(box);
+
+      progressEl.textContent = `${qIndex+1}/${quiz.length}`;
+    }
+
+    function choose(i, btnEl){
+      if(answered) return;
+      answered = true;
+
+      const q = quiz[qIndex];
+      const nodes = quizArea.querySelectorAll(".choice");
+      nodes.forEach(n=> n.style.pointerEvents = "none");
+
+      if(i === q.answer){
+        btnEl.classList.add("good");
+        addScore(3);
+        setStreak(streak + 1);
+        $("#fb").innerHTML = `✅ Correct! +3 points<br>${q.explain}`;
+        toast(quizToast, "✅ Nice! +3 points", true);
+      } else {
+        btnEl.classList.add("bad");
+        nodes[q.answer].classList.add("good");
+        addScore(-1);
+        setStreak(0);
+        $("#fb").innerHTML = `❌ Not correct. -1 point<br>${q.explain}`;
+        toast(quizToast, "❌ Try again next question.", false);
+      }
+    }
+
+    $("#nextBtn").addEventListener("click", ()=>{
+      qIndex = (qIndex + 1) % quiz.length;
+      renderQuestion();
+    });
+
+    // ======= Reset =======
+    $("#resetBtn").addEventListener("click", ()=>{
+      score = 0; streak = 0;
+      scoreEl.textContent = "0";
+      streakEl.textContent = "0";
+      quiz = shuffle(quizBank);
+      qIndex = 0;
+      initDragDrop();
+      renderQuestion();
+      toast(ddToast, "🔄 Reset done.", true);
+      toast(quizToast, "🔄 Reset done.", true);
+    });
+
+    // ======= Init =======
+    function init(){
+      quiz = shuffle(quizBank);
+      qIndex = 0;
+      initDragDrop();
+      renderQuestion();
+    }
+    init();
+  </script>
+</body>
+</html>
