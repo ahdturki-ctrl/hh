@@ -3,470 +3,338 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Simple Present — Interactive Lesson</title>
+  <title>Simple Present Quiz 💗</title>
   <style>
     :root{
-      --bg1:#0b1020;
-      --bg2:#0f2a3a;
-      --card:rgba(255,255,255,.10);
-      --card2:rgba(255,255,255,.14);
-      --text:#f6f7fb;
-      --muted:rgba(255,255,255,.75);
-      --good:#2ee59d;
-      --bad:#ff5c7a;
-      --warn:#ffd166;
-      --accent:#7c5cff;
-      --accent2:#39d5ff;
-      --shadow: 0 14px 40px rgba(0,0,0,.35);
-      --radius:18px;
+      --bg1:#fff0f6;   /* very light pink */
+      --bg2:#ffe3f0;   /* soft pink */
+      --card:#ffffffcc;
+      --stroke:#ffd1e6;
+      --text:#3a2b36;
+      --muted:#6b5160;
+      --accent:#ff4da6;    /* hot pink */
+      --accent2:#ff85c2;   /* bright soft pink */
+      --good:#19c37d;
+      --bad:#ff3b6a;
+      --shadow: 0 18px 40px rgba(255,77,166,.18);
+      --radius:20px;
     }
     *{box-sizing:border-box}
     body{
       margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       color:var(--text);
-      background:
-        radial-gradient(1000px 600px at 15% 10%, rgba(124,92,255,.45), transparent 60%),
-        radial-gradient(900px 650px at 85% 15%, rgba(57,213,255,.35), transparent 55%),
-        radial-gradient(900px 650px at 55% 95%, rgba(46,229,157,.25), transparent 60%),
-        linear-gradient(135deg, var(--bg1), var(--bg2));
       min-height:100vh;
+      background:
+        radial-gradient(1000px 650px at 15% 15%, rgba(255,77,166,.18), transparent 60%),
+        radial-gradient(900px 650px at 85% 20%, rgba(255,133,194,.22), transparent 55%),
+        radial-gradient(900px 650px at 55% 95%, rgba(255,209,230,.35), transparent 60%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+      padding:18px;
     }
-    header{
-      padding:22px 18px 0;
-      max-width:1100px;
+    .wrap{
+      max-width: 980px;
       margin:0 auto;
     }
-    .topbar{
+
+    header{
       display:flex;
       gap:12px;
       align-items:center;
       justify-content:space-between;
       flex-wrap:wrap;
+      margin-bottom:14px;
     }
+
     .title{
-      display:flex; gap:12px; align-items:center;
+      display:flex;
+      gap:12px;
+      align-items:center;
     }
-    .badge{
-      width:46px;height:46px;border-radius:14px;
-      background: linear-gradient(135deg, rgba(124,92,255,.9), rgba(57,213,255,.85));
-      box-shadow: var(--shadow);
+    .logo{
+      width:54px;height:54px;border-radius:18px;
       display:grid;place-items:center;
-      font-weight:800;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color:white;
+      font-weight:900;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,.45);
+      user-select:none;
     }
-    h1{margin:0;font-size:22px;letter-spacing:.2px}
-    .sub{margin:2px 0 0;color:var(--muted);font-size:14px}
-    .controls{
-      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
-      background: rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.14);
-      padding:10px 12px;
-      border-radius: 16px;
-      box-shadow: 0 10px 24px rgba(0,0,0,.18);
+    h1{
+      margin:0;
+      font-size:20px;
+      letter-spacing:.2px;
+    }
+    .sub{
+      margin-top:3px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .panel{
+      background: var(--card);
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
       backdrop-filter: blur(10px);
+      padding:14px;
+    }
+
+    .top-controls{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:12px;
+    }
+
+    .stats{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
     }
     .pill{
-      display:flex; gap:8px; align-items:center;
       padding:8px 10px;
       border-radius: 999px;
-      background: rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.12);
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.8);
       font-size:13px;
-      color: var(--muted);
+      color:var(--muted);
+      display:flex;
+      gap:8px;
+      align-items:center;
       user-select:none;
     }
     .pill strong{color:var(--text)}
     .btn{
       cursor:pointer;
       border:none;
-      color: var(--text);
-      background: linear-gradient(135deg, rgba(124,92,255,.95), rgba(57,213,255,.75));
       padding:10px 12px;
       border-radius: 14px;
-      font-weight:700;
-      box-shadow: 0 10px 22px rgba(0,0,0,.25);
-      transition: transform .08s ease, filter .15s ease;
+      font-weight:800;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color:white;
+      box-shadow: 0 12px 26px rgba(255,77,166,.22);
+      transition: transform .08s ease, filter .12s ease;
       font-size:13px;
     }
     .btn:active{transform: translateY(1px) scale(.99)}
     .btn.secondary{
-      background: rgba(255,255,255,.10);
-      border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.9);
+      color: var(--text);
+      border:1px solid var(--stroke);
       box-shadow:none;
-      font-weight:650;
-    }
-    main{
-      max-width:1100px;
-      margin:0 auto;
-      padding:16px 18px 40px;
-    }
-    .grid{
-      display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap:14px;
-    }
-    @media (max-width: 980px){
-      .grid{grid-template-columns:1fr}
-    }
-    .card{
-      background: var(--card);
-      border: 1px solid rgba(255,255,255,.14);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding:14px;
-      backdrop-filter: blur(12px);
-    }
-    .card h2{
-      margin:4px 0 10px;
-      font-size:16px;
-    }
-    .mini{
-      display:flex; gap:10px; flex-wrap:wrap;
-      color:var(--muted); font-size:13px; margin-top:8px;
-    }
-    .tag{
-      background: rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.12);
-      border-radius: 999px;
-      padding:6px 10px;
-    }
-    .rulebox{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:10px;
-    }
-    @media (max-width: 560px){
-      .rulebox{grid-template-columns:1fr}
-    }
-    .rule{
-      background: rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.12);
-      border-radius: 16px;
-      padding:12px;
-    }
-    .rule .head{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:10px;
-      margin-bottom:8px;
-    }
-    .chip{
-      font-size:12px;
-      padding:5px 9px;
-      border-radius: 999px;
-      background: rgba(57,213,255,.14);
-      border:1px solid rgba(57,213,255,.22);
-      color: var(--text);
-    }
-    .rule ul{margin:0; padding-left:18px; color:var(--muted); font-size:13px}
-    .rule li{margin:6px 0}
-    .example{
-      font-size:14px;
-      color: var(--text);
-      margin-top:8px;
-      padding:10px 12px;
-      border-radius: 14px;
-      background: rgba(255,255,255,.08);
-      border:1px dashed rgba(255,255,255,.22);
     }
 
-    /* Drag & Drop */
-    .dd-wrap{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:12px;
-      margin-top:10px;
-    }
-    @media (max-width: 740px){
-      .dd-wrap{grid-template-columns:1fr}
-    }
-    .dropzone{
-      padding:12px;
-      border-radius: 16px;
-      background: rgba(255,255,255,.07);
-      border:1px solid rgba(255,255,255,.15);
-      min-height:150px;
-    }
-    .dropzone h3{
-      margin:0 0 8px;
-      font-size:14px;
-      display:flex; align-items:center; justify-content:space-between;
-      color: var(--text);
-    }
-    .count{
-      font-size:12px;
-      color: var(--muted);
-      padding:4px 8px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.12);
-    }
-    .tiles{
+    .mode{
       display:flex;
-      flex-wrap:wrap;
       gap:8px;
-      margin-top:6px;
+      align-items:center;
+      flex-wrap:wrap;
     }
-    .tile{
-      padding:8px 10px;
-      border-radius: 14px;
-      background: rgba(255,255,255,.10);
-      border:1px solid rgba(255,255,255,.18);
-      cursor:grab;
-      user-select:none;
-      font-size:13px;
-    }
-    .tile:active{cursor:grabbing}
-    .tile.good{border-color: rgba(46,229,157,.55); background: rgba(46,229,157,.14)}
-    .tile.bad{border-color: rgba(255,92,122,.55); background: rgba(255,92,122,.14)}
-    .hint{
-      color: var(--muted);
-      font-size:13px;
-      margin-top:8px;
+    .seg{
       display:flex;
-      gap:10px;
-      align-items:flex-start;
+      background: rgba(255,255,255,.85);
+      border:1px solid var(--stroke);
+      border-radius: 999px;
+      padding:5px;
+      gap:6px;
     }
-    .dot{
-      width:10px;height:10px;border-radius:99px;margin-top:5px;
-      background: var(--warn);
-      box-shadow: 0 0 0 4px rgba(255,209,102,.14);
+    .seg button{
+      border:none;
+      cursor:pointer;
+      border-radius: 999px;
+      padding:8px 12px;
+      font-weight:850;
+      font-size:13px;
+      color:var(--muted);
+      background: transparent;
+      transition: filter .12s ease;
+      user-select:none;
+    }
+    .seg button.active{
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color:white;
+      box-shadow: 0 10px 18px rgba(255,77,166,.18);
     }
 
-    /* Quiz */
-    .q{
-      background: rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.12);
-      border-radius: 16px;
-      padding:12px;
-      margin-top:10px;
+    .qbox{
+      background: rgba(255,255,255,.88);
+      border:1px solid var(--stroke);
+      border-radius: 18px;
+      padding:14px;
     }
-    .q .stem{
-      font-size:14px;
+    .qhead{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:10px;
+      flex-wrap:wrap;
       margin-bottom:10px;
+    }
+    .qtitle{
+      font-size:15px;
       line-height:1.5;
     }
+    .mini{
+      font-size:12px;
+      color:var(--muted);
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size:12px;
+      padding:2px 7px;
+      border-radius: 8px;
+      background: rgba(255,77,166,.09);
+      border: 1px solid rgba(255,77,166,.20);
+      color: var(--text);
+      white-space:nowrap;
+    }
+
     .choices{
       display:grid;
       grid-template-columns: 1fr 1fr;
-      gap:8px;
+      gap:10px;
+      margin-top:10px;
     }
-    @media (max-width: 560px){
+    @media (max-width: 620px){
       .choices{grid-template-columns:1fr}
     }
     .choice{
-      display:flex; gap:10px; align-items:center;
-      padding:10px 12px;
-      border-radius: 14px;
-      background: rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.14);
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding:12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.95);
+      border:1px solid var(--stroke);
       cursor:pointer;
-      transition: transform .06s ease, filter .12s ease;
       user-select:none;
+      transition: transform .07s ease, filter .12s ease;
       font-size:13px;
-    }
-    .choice:hover{filter:brightness(1.05)}
-    .choice:active{transform: translateY(1px)}
-    .choice.good{border-color: rgba(46,229,157,.55); background: rgba(46,229,157,.14)}
-    .choice.bad{border-color: rgba(255,92,122,.55); background: rgba(255,92,122,.14)}
-    .feedback{
-      margin-top:10px;
-      font-size:13px;
-      color: var(--muted);
       line-height:1.45;
     }
+    .choice:hover{filter:brightness(1.02)}
+    .choice:active{transform: translateY(1px)}
+    .choice.good{
+      border-color: rgba(25,195,125,.35);
+      background: rgba(25,195,125,.10);
+    }
+    .choice.bad{
+      border-color: rgba(255,59,106,.35);
+      background: rgba(255,59,106,.10);
+    }
 
-    .footerbar{
+    .feedback{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius: 14px;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.88);
+      color: var(--muted);
+      font-size:13px;
+      line-height:1.5;
+      min-height:44px;
+    }
+
+    .footer{
       margin-top:12px;
       display:flex;
       gap:10px;
       flex-wrap:wrap;
-      align-items:center;
       justify-content:space-between;
-      color: var(--muted);
-      font-size:13px;
+      align-items:center;
     }
+
     .toast{
       margin-top:10px;
       padding:10px 12px;
       border-radius: 14px;
-      background: rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.14);
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.9);
       display:none;
+      font-size:13px;
+      color: var(--muted);
     }
     .toast.show{display:block}
-    .kbd{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      font-size:12px;
-      padding:2px 6px;
-      border-radius: 8px;
-      background: rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.14);
-      color: var(--text);
-      white-space:nowrap;
-    }
   </style>
 </head>
 <body>
-  <header>
-    <div class="topbar">
+  <div class="wrap">
+    <header>
       <div class="title">
-        <div class="badge">SP</div>
+        <div class="logo">💗</div>
         <div>
-          <h1>Simple Present Tense — Interactive Lesson</h1>
-          <div class="sub">Quick rules + practice (drag & drop + quiz) — works offline</div>
+          <h1>Simple Present Quiz</h1>
+          <div class="sub">Choose a mode: Positive ✅ or Negative ❌ — then answer! 🌸</div>
         </div>
       </div>
-      <div class="controls">
-        <div class="pill">Score: <strong id="score">0</strong></div>
-        <div class="pill">Streak: <strong id="streak">0</strong></div>
-        <button class="btn secondary" id="showRulesBtn" type="button">Show / Hide Rules</button>
-        <button class="btn" id="resetBtn" type="button">Reset</button>
+
+      <div class="mode">
+        <div class="seg" role="tablist" aria-label="Quiz mode">
+          <button id="modePos" class="active" type="button">✅ Positive</button>
+          <button id="modeNeg" type="button">❌ Negative</button>
+        </div>
+        <button class="btn secondary" id="resetBtn" type="button">🔄 Reset</button>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <main>
-    <div class="grid">
-      <!-- Left: Rules + examples + drag/drop -->
-      <section class="card">
-        <h2>1) Rules (Simple Present)</h2>
-        <div class="mini">
-          <span class="tag">Use for habits & routines</span>
-          <span class="tag">Facts & general truths</span>
-          <span class="tag">Schedules / timetables</span>
+    <section class="panel">
+      <div class="top-controls">
+        <div class="stats">
+          <div class="pill">✨ Score: <strong id="score">0</strong></div>
+          <div class="pill">🔥 Streak: <strong id="streak">0</strong></div>
+          <div class="pill">📌 Mode: <strong id="modeLabel">Positive</strong></div>
         </div>
 
-        <div id="rulesPanel" style="margin-top:12px;">
-          <div class="rulebox">
-            <div class="rule">
-              <div class="head">
-                <strong>Affirmative (+)</strong>
-                <span class="chip">I / You / We / They</span>
-              </div>
-              <ul>
-                <li>Subject + base verb</li>
-                <li><b>I play</b>, <b>They work</b></li>
-              </ul>
-              <div class="example">Example: <b>We study</b> English every day.</div>
-            </div>
-
-            <div class="rule">
-              <div class="head">
-                <strong>Affirmative (+)</strong>
-                <span class="chip">He / She / It</span>
-              </div>
-              <ul>
-                <li>Subject + verb + <b>s/es</b></li>
-                <li><b>He plays</b>, <b>She watches</b></li>
-              </ul>
-              <div class="example">Example: <b>He goes</b> to school at 7.</div>
-            </div>
-
-            <div class="rule">
-              <div class="head">
-                <strong>Negative (–)</strong>
-                <span class="chip">do / does + not</span>
-              </div>
-              <ul>
-                <li>I/You/We/They: <b>do not (don’t) + base</b></li>
-                <li>He/She/It: <b>does not (doesn’t) + base</b></li>
-              </ul>
-              <div class="example">Example: <b>She doesn’t like</b> milk.</div>
-            </div>
-
-            <div class="rule">
-              <div class="head">
-                <strong>Questions (?)</strong>
-                <span class="chip">Do / Does</span>
-              </div>
-              <ul>
-                <li><b>Do</b> + I/you/we/they + base?</li>
-                <li><b>Does</b> + he/she/it + base?</li>
-              </ul>
-              <div class="example">Example: <b>Does</b> he <b>play</b> football?</div>
-            </div>
-          </div>
-
-          <div class="hint">
-            <div class="dot"></div>
-            <div>
-              <div><b>Spelling tips:</b> add <b>es</b> with verbs ending in <span class="kbd">s, sh, ch, x, o</span> (watches, goes). For <span class="kbd">consonant + y</span>, change y → <b>ies</b> (study → studies).</div>
-            </div>
-          </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+          <button class="btn secondary" id="shuffleBtn" type="button">🎲 Shuffle</button>
+          <button class="btn" id="nextBtn" type="button">➡️ Next</button>
         </div>
+      </div>
 
-        <h2 style="margin-top:14px;">2) Drag & Drop Practice</h2>
-        <div class="mini">
-          <span class="tag">Drag each sentence to the correct box</span>
-          <span class="tag">Instant feedback</span>
-        </div>
+      <div class="qbox" id="quizArea"></div>
 
-        <div class="dd-wrap">
-          <div class="dropzone" id="zoneCorrect">
-            <h3>✅ Correct Simple Present <span class="count" id="countCorrect">0</span></h3>
-            <div class="tiles" id="tilesCorrect" aria-label="correct zone"></div>
-          </div>
+      <div class="feedback" id="feedback">Tap an answer to see feedback 🌷</div>
 
-          <div class="dropzone" id="zoneFix">
-            <h3>🛠 Needs Fixing <span class="count" id="countFix">0</span></h3>
-            <div class="tiles" id="tilesFix" aria-label="fix zone"></div>
-          </div>
-        </div>
+      <div class="footer">
+        <div class="mini">Progress: <span class="kbd" id="progress">0/0</span></div>
+        <div class="mini">Tip: With <span class="kbd">he/she/it</span> add <span class="kbd">s/es</span>. For negatives use <span class="kbd">don’t/doesn’t</span> 💡</div>
+      </div>
 
-        <div class="hint">
-          <div class="dot" style="background:var(--accent2); box-shadow:0 0 0 4px rgba(57,213,255,.14)"></div>
-          <div>
-            Tip: Focus on <b>He/She/It + s/es</b> and using <b>do/does</b> for questions & negatives.
-          </div>
-        </div>
-
-        <div class="toast" id="ddToast"></div>
-      </section>
-
-      <!-- Right: Quiz -->
-      <aside class="card">
-        <h2>3) Quick Quiz</h2>
-        <div class="mini">
-          <span class="tag">Multiple choice</span>
-          <span class="tag">Score + streak</span>
-        </div>
-
-        <div id="quizArea"></div>
-
-        <div class="footerbar">
-          <div>Progress: <span class="kbd" id="progress">0/0</span></div>
-          <button class="btn secondary" id="nextBtn" type="button">Next Question</button>
-        </div>
-
-        <div class="toast" id="quizToast"></div>
-      </aside>
-    </div>
-  </main>
+      <div class="toast" id="toast"></div>
+    </section>
+  </div>
 
   <script>
-    // ======= Helpers =======
-    const $ = (sel) => document.querySelector(sel);
+    // ===== Helpers =====
+    const $ = (s)=>document.querySelector(s);
     const scoreEl = $("#score");
     const streakEl = $("#streak");
+    const modeLabelEl = $("#modeLabel");
+    const progressEl = $("#progress");
+    const quizArea = $("#quizArea");
+    const feedbackEl = $("#feedback");
+    const toastEl = $("#toast");
 
-    let score = 0;
-    let streak = 0;
+    let score = 0, streak = 0;
+    function addScore(p){ score = Math.max(0, score + p); scoreEl.textContent = score; }
+    function setStreak(v){ streak = Math.max(0, v); streakEl.textContent = streak; }
 
-    function addScore(points){
-      score = Math.max(0, score + points);
-      scoreEl.textContent = score;
+    function toast(msg, ok=true){
+      toastEl.classList.add("show");
+      toastEl.style.borderColor = ok ? "rgba(25,195,125,.35)" : "rgba(255,59,106,.35)";
+      toastEl.innerHTML = msg;
+      clearTimeout(toastEl._t);
+      toastEl._t = setTimeout(()=>toastEl.classList.remove("show"), 2200);
     }
-    function setStreak(val){
-      streak = Math.max(0, val);
-      streakEl.textContent = streak;
-    }
-    function toast(el, msg, ok=true){
-      el.classList.add("show");
-      el.style.borderColor = ok ? "rgba(46,229,157,.35)" : "rgba(255,92,122,.35)";
-      el.innerHTML = msg;
-      clearTimeout(el._t);
-      el._t = setTimeout(()=> el.classList.remove("show"), 2400);
-    }
+
     function shuffle(arr){
       const a = arr.slice();
       for(let i=a.length-1;i>0;i--){
@@ -476,164 +344,101 @@
       return a;
     }
 
-    // ======= Rules panel toggle =======
-    $("#showRulesBtn").addEventListener("click", ()=>{
-      const p = $("#rulesPanel");
-      p.style.display = (p.style.display === "none") ? "block" : "none";
-    });
-
-    // ======= Drag & Drop content =======
-    const ddItems = [
-      { text: "She play tennis every weekend.", correct: false, fix: "She plays tennis every weekend." },
-      { text: "They study English on Mondays.", correct: true },
-      { text: "He goes to school at 7.", correct: true },
-      { text: "I don’t likes coffee.", correct: false, fix: "I don’t like coffee." },
-      { text: "Does he work here?", correct: true },
-      { text: "We watches TV at night.", correct: false, fix: "We watch TV at night." },
-      { text: "My father doesn’t drive on Fridays.", correct: true },
-      { text: "Do she like apples?", correct: false, fix: "Does she like apples?" }
-    ];
-
-    const tilesCorrect = $("#tilesCorrect");
-    const tilesFix = $("#tilesFix");
-    const ddToast = $("#ddToast");
-
-    function updateCounts(){
-      $("#countCorrect").textContent = tilesCorrect.children.length;
-      $("#countFix").textContent = tilesFix.children.length;
-    }
-
-    function makeTile(item){
-      const div = document.createElement("div");
-      div.className = "tile";
-      div.draggable = true;
-      div.textContent = item.text;
-      div.dataset.correct = item.correct ? "1" : "0";
-      div.dataset.fix = item.fix || "";
-
-      div.addEventListener("dragstart", (e)=>{
-        e.dataTransfer.setData("text/plain", div.dataset.id);
-        e.dataTransfer.effectAllowed = "move";
-        div.classList.add("dragging");
-      });
-      div.addEventListener("dragend", ()=>{
-        div.classList.remove("dragging");
-      });
-      return div;
-    }
-
-    function enableDrop(zoneEl, isCorrectZone){
-      zoneEl.addEventListener("dragover", (e)=>{
-        e.preventDefault();
-        e.dataTransfer.dropEffect = "move";
-      });
-      zoneEl.addEventListener("drop", (e)=>{
-        e.preventDefault();
-        const id = e.dataTransfer.getData("text/plain");
-        const tile = document.querySelector(`.tile[data-id="${id}"]`);
-        if(!tile) return;
-        zoneEl.querySelector(".tiles").appendChild(tile);
-        gradeDrop(tile, isCorrectZone);
-        updateCounts();
-      });
-    }
-
-    function gradeDrop(tile, droppedInCorrect){
-      const isCorrect = tile.dataset.correct === "1";
-      tile.classList.remove("good","bad");
-
-      if(droppedInCorrect && isCorrect){
-        tile.classList.add("good");
-        addScore(2);
-        setStreak(streak + 1);
-        toast(ddToast, "✅ Correct! +2 points", true);
-      } else if(!droppedInCorrect && !isCorrect){
-        tile.classList.add("good");
-        addScore(2);
-        setStreak(streak + 1);
-        const fix = tile.dataset.fix ? `<br><span class="kbd">${tile.dataset.fix}</span>` : "";
-        toast(ddToast, `✅ Good catch! +2 points${fix}`, true);
-      } else {
-        tile.classList.add("bad");
-        addScore(-1);
-        setStreak(0);
-        const fix = tile.dataset.fix ? `<br>Try: <span class="kbd">${tile.dataset.fix}</span>` : "";
-        toast(ddToast, `❌ Not quite. -1 point${fix}`, false);
-      }
-    }
-
-    function initDragDrop(){
-      tilesCorrect.innerHTML = "";
-      tilesFix.innerHTML = "";
-      const items = shuffle(ddItems);
-
-      items.forEach((item, idx)=>{
-        const tile = makeTile(item);
-        tile.dataset.id = "t" + idx;
-        // Start all tiles in a mixed pile inside Fix zone for gameplay
-        tilesFix.appendChild(tile);
-      });
-
-      enableDrop($("#zoneCorrect"), true);
-      enableDrop($("#zoneFix"), false);
-
-      updateCounts();
-    }
-
-    // ======= Quiz =======
-    const quizBank = [
+    // ===== Question banks =====
+    const positiveBank = [
       {
-        stem: "Choose the correct sentence:",
+        stem: "Choose the correct sentence 💞",
         choices: ["He play football every day.", "He plays football every day.", "He is play football every day.", "He playing football every day."],
         answer: 1,
-        explain: "With <b>he/she/it</b>, add <b>s/es</b> → <b>He plays</b>."
+        explain: "With <b>he/she/it</b>, add <b>s/es</b> → <b>He plays</b> ✅"
       },
       {
-        stem: "Complete: _____ you like tea?",
-        choices: ["Does", "Do", "Is", "Are"],
-        answer: 1,
-        explain: "Questions with <b>I/you/we/they</b> use <b>Do</b>."
-      },
-      {
-        stem: "Complete: She _____ (watch) TV at night.",
+        stem: "Complete: She _____ (watch) TV at night 📺",
         choices: ["watch", "watches", "watching", "is watch"],
         answer: 1,
-        explain: "Verb ending with <b>ch</b> → add <b>es</b>: <b>watches</b>."
+        explain: "Verb ends with <b>ch</b> → add <b>es</b>: <b>watches</b> ✅"
       },
       {
-        stem: "Choose the correct negative:",
-        choices: ["He don’t like apples.", "He doesn’t likes apples.", "He doesn’t like apples.", "He not like apples."],
-        answer: 2,
-        explain: "Negative with <b>he/she/it</b> → <b>doesn’t + base verb</b>."
+        stem: "Choose the correct sentence 🌸",
+        choices: ["They goes to school by bus.", "They go to school by bus.", "They going to school by bus.", "They are go to school by bus."],
+        answer: 1,
+        explain: "With <b>they</b> use base verb → <b>They go</b> ✅"
       },
       {
-        stem: "Complete: They _____ to school by bus.",
-        choices: ["go", "goes", "going", "is go"],
-        answer: 0,
-        explain: "<b>They</b> takes the base verb: <b>go</b>."
+        stem: "Complete: My brother _____ (study) English every day 📚",
+        choices: ["study", "studies", "studying", "is study"],
+        answer: 1,
+        explain: "Consonant + y → y to <b>ies</b>: <b>study → studies</b> ✅"
       }
     ];
 
+    const negativeBank = [
+      {
+        stem: "Choose the correct negative ❌",
+        choices: ["He don’t like apples.", "He doesn’t likes apples.", "He doesn’t like apples.", "He not like apples."],
+        answer: 2,
+        explain: "With <b>he/she/it</b> → <b>doesn’t + base verb</b> ✅"
+      },
+      {
+        stem: "Complete: I _____ (like) coffee ☕",
+        choices: ["don’t like", "doesn’t like", "don’t likes", "doesn’t likes"],
+        answer: 0,
+        explain: "With <b>I</b> → <b>don’t + base</b> ✅"
+      },
+      {
+        stem: "Choose the correct negative 🌷",
+        choices: ["They doesn’t play here.", "They don’t play here.", "They don’t plays here.", "They not play here."],
+        answer: 1,
+        explain: "With <b>they</b> → <b>don’t + base</b> ✅"
+      },
+      {
+        stem: "Complete: She _____ (watch) TV in the morning 📺",
+        choices: ["don’t watch", "doesn’t watches", "doesn’t watch", "doesn’t watching"],
+        answer: 2,
+        explain: "With <b>she</b> → <b>doesn’t + base verb</b> ✅"
+      }
+    ];
+
+    // ===== State =====
+    let mode = "positive"; // "positive" | "negative"
     let quiz = [];
     let qIndex = 0;
     let answered = false;
 
-    const quizArea = $("#quizArea");
-    const quizToast = $("#quizToast");
-    const progressEl = $("#progress");
+    function setMode(newMode){
+      mode = newMode;
+      $("#modePos").classList.toggle("active", mode === "positive");
+      $("#modeNeg").classList.toggle("active", mode === "negative");
+      modeLabelEl.textContent = mode === "positive" ? "Positive" : "Negative";
+
+      quiz = shuffle(mode === "positive" ? positiveBank : negativeBank);
+      qIndex = 0;
+      answered = false;
+      renderQuestion();
+      feedbackEl.innerHTML = "Tap an answer to see feedback 🌷";
+      toast(mode === "positive" ? "✅ Positive mode loaded!" : "❌ Negative mode loaded!", true);
+    }
 
     function renderQuestion(){
       answered = false;
       quizArea.innerHTML = "";
+
       const q = quiz[qIndex];
+      progressEl.textContent = `${qIndex+1}/${quiz.length}`;
 
-      const box = document.createElement("div");
-      box.className = "q";
+      const head = document.createElement("div");
+      head.className = "qhead";
 
-      const stem = document.createElement("div");
-      stem.className = "stem";
-      stem.innerHTML = `<b>Q${qIndex+1}.</b> ${q.stem}`;
-      box.appendChild(stem);
+      const title = document.createElement("div");
+      title.className = "qtitle";
+      title.innerHTML = `<b>Q${qIndex+1}.</b> ${q.stem}`;
+
+      const mini = document.createElement("div");
+      mini.className = "mini";
+      mini.innerHTML = `🎀 Focus: <span class="kbd">${mode === "positive" ? "Affirmative (+)" : "Negative (–)"}</span>`;
+
+      head.appendChild(title);
+      head.appendChild(mini);
 
       const choices = document.createElement("div");
       choices.className = "choices";
@@ -646,69 +451,62 @@
         choices.appendChild(btn);
       });
 
-      box.appendChild(choices);
-
-      const fb = document.createElement("div");
-      fb.className = "feedback";
-      fb.id = "fb";
-      fb.textContent = "Tap an answer.";
-      box.appendChild(fb);
-
-      quizArea.appendChild(box);
-
-      progressEl.textContent = `${qIndex+1}/${quiz.length}`;
+      quizArea.appendChild(head);
+      quizArea.appendChild(choices);
     }
 
-    function choose(i, btnEl){
+    function choose(i, el){
       if(answered) return;
       answered = true;
 
       const q = quiz[qIndex];
       const nodes = quizArea.querySelectorAll(".choice");
-      nodes.forEach(n=> n.style.pointerEvents = "none");
+      nodes.forEach(n=> n.style.pointerEvents="none");
 
       if(i === q.answer){
-        btnEl.classList.add("good");
+        el.classList.add("good");
         addScore(3);
         setStreak(streak + 1);
-        $("#fb").innerHTML = `✅ Correct! +3 points<br>${q.explain}`;
-        toast(quizToast, "✅ Nice! +3 points", true);
+        feedbackEl.innerHTML = `✅ Correct! +3 points<br>${q.explain}`;
+        toast("🌸 Great! +3 points", true);
       } else {
-        btnEl.classList.add("bad");
+        el.classList.add("bad");
         nodes[q.answer].classList.add("good");
         addScore(-1);
         setStreak(0);
-        $("#fb").innerHTML = `❌ Not correct. -1 point<br>${q.explain}`;
-        toast(quizToast, "❌ Try again next question.", false);
+        feedbackEl.innerHTML = `❌ Not correct. -1 point<br>${q.explain}`;
+        toast("💔 Oops! -1 point", false);
       }
     }
 
+    // ===== Buttons =====
     $("#nextBtn").addEventListener("click", ()=>{
       qIndex = (qIndex + 1) % quiz.length;
       renderQuestion();
+      feedbackEl.innerHTML = "Tap an answer to see feedback 🌷";
     });
 
-    // ======= Reset =======
+    $("#shuffleBtn").addEventListener("click", ()=>{
+      quiz = shuffle(quiz);
+      qIndex = 0;
+      renderQuestion();
+      feedbackEl.innerHTML = "Shuffled! Tap an answer 🌷";
+      toast("🎲 Shuffled!", true);
+    });
+
     $("#resetBtn").addEventListener("click", ()=>{
       score = 0; streak = 0;
       scoreEl.textContent = "0";
       streakEl.textContent = "0";
-      quiz = shuffle(quizBank);
-      qIndex = 0;
-      initDragDrop();
-      renderQuestion();
-      toast(ddToast, "🔄 Reset done.", true);
-      toast(quizToast, "🔄 Reset done.", true);
+      setMode(mode); // reload current mode quiz
+      toast("🔄 Reset done!", true);
     });
 
-    // ======= Init =======
-    function init(){
-      quiz = shuffle(quizBank);
-      qIndex = 0;
-      initDragDrop();
-      renderQuestion();
-    }
-    init();
+    $("#modePos").addEventListener("click", ()=> setMode("positive"));
+    $("#modeNeg").addEventListener("click", ()=> setMode("negative"));
+
+    // ===== Init =====
+    setMode("positive");
   </script>
 </body>
 </html>
